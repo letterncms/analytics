@@ -46,20 +46,13 @@ function c(e) {
 		refetchInterval: 6e4
 	});
 }
-function l(e, t, i = 8) {
-	return n("analytics/breakdown", {
-		period: e,
-		dimension: t,
-		limit: i
-	}, { placeholderData: r });
-}
-function u(t) {
+function l(t) {
 	return (/* @__PURE__ */ new Date(`${t}T12:00:00`)).toLocaleDateString(e(), {
 		month: "short",
 		day: "numeric"
 	});
 }
-function d(t) {
+function u(t) {
 	return (/* @__PURE__ */ new Date(`${t}T12:00:00`)).toLocaleDateString(e(), {
 		weekday: "short",
 		month: "short",
@@ -67,4 +60,4 @@ function d(t) {
 		year: "numeric"
 	});
 }
-export { d as a, c, o as i, i as n, u as o, s as r, l as s, a as t };
+export { u as a, o as i, i as n, l as o, s as r, c as s, a as t };

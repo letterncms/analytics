@@ -1,10 +1,10 @@
-import { c as e, i as t, o as n, r } from "./data-2PmQxBBe.js";
+import { i as e, o as t, r as n, s as r } from "./data-BTiWt5A4.js";
 import { can as i, navigate as a, t as o } from "@letterncms/sdk";
 import { Button as s, Skeleton as c, Sparkline as l, Stat as u, Widget as d } from "@letterncms/ui";
 import { jsx as f, jsxs as p } from "react/jsx-runtime";
 // admin/src/WidgetOverview.tsx
 function m() {
-	let m = e("30d"), h = m.data, g = h?.series[0], _ = h?.mode === "counts";
+	let m = r("30d"), h = m.data, g = h?.series[0], _ = h?.mode === "counts";
 	return /* @__PURE__ */ f(d, {
 		action: {
 			label: o("View Analytics"),
@@ -40,18 +40,18 @@ function m() {
 					children: [
 						_ || /* @__PURE__ */ f(u, {
 							label: o("Visitors"),
-							value: t("visitors", h.visitors),
-							delta: r(h.visitors, h.previous.visitors)
+							value: e("visitors", h.visitors),
+							delta: n(h.visitors, h.previous.visitors)
 						}),
 						/* @__PURE__ */ f(u, {
 							label: o("Page Views"),
-							value: t("views", h.views),
-							delta: r(h.views, h.previous.views)
+							value: e("views", h.views),
+							delta: n(h.views, h.previous.views)
 						}),
 						_ || /* @__PURE__ */ f(u, {
 							label: o("Bounce Rate"),
-							value: t("bounceRate", h.bounceRate),
-							delta: r(h.bounceRate, h.previous.bounceRate),
+							value: e("bounceRate", h.bounceRate),
+							delta: n(h.bounceRate, h.previous.bounceRate),
 							good: "down",
 							className: "hidden @md:block"
 						})
@@ -65,7 +65,7 @@ function m() {
 				/* @__PURE__ */ p("div", {
 					className: "mt-1.5 flex justify-between text-2xs text-faint",
 					children: [
-						/* @__PURE__ */ f("span", { children: g && n(g.date) }),
+						/* @__PURE__ */ f("span", { children: g && t(g.date) }),
 						/* @__PURE__ */ f("span", { children: o("Last 30 days") }),
 						/* @__PURE__ */ f("span", { children: o("Today") })
 					]
