@@ -37,7 +37,9 @@ final class AnalyticsPlugin extends Plugin
 
         $cms->settingsRegistry()->register(Collector::SETTINGS, fields: [
             ['handle' => 'enabled', 'type' => 'toggle', 'label' => 'Count Visits', 'default' => true],
-            ['handle' => 'mode', 'type' => 'select', 'label' => 'What to Count', 'default' => Collector::COUNTS, 'options' => [Collector::COUNTS => __('Page Views Only'), Collector::VISITORS => __('Visitors, Sources and Devices')], 'display' => 'radio', 'if' => ['enabled' => true]],
+            ['handle' => 'mode', 'type' => 'select', 'label' => 'What to Count', 'default' => Collector::COUNTS, 'options' => [Collector::COUNTS => __('Page Views Only'), Collector::VISITORS => __('Visitors, Sources and Devices')], 'display' => 'radio', 'if' => ['enabled' => true],
+                // Said where it happens: saving the switch back asks first.
+                'confirmChange' => ['from' => Collector::VISITORS, 'title' => __('Count page views only?'), 'text' => __('Switching back to page views deletes visitor data.'), 'confirm' => __('Delete Visitor Data')]],
             ['handle' => 'consent_required', 'type' => 'toggle', 'label' => 'Wait for Consent', 'default' => true, 'if' => ['enabled' => true, 'mode' => Collector::VISITORS]],
             ['handle' => 'exclude', 'type' => 'tags', 'label' => 'Paths Not to Count', 'placeholder' => '/drafts/*', 'if' => ['enabled' => true]],
             ['handle' => 'retention_days', 'type' => 'number', 'label' => 'Keep Visits For', 'suffix' => 'days', 'min' => 0, 'default' => 730, 'placeholder' => 'Forever', 'if' => ['enabled' => true]],
@@ -100,6 +102,18 @@ final class AnalyticsPlugin extends Plugin
         });
 
         // Changing what is counted, or where, rebuilds the static pages.
+        // A reporting address on another host is one the pages call and load a pixel from: the site's content security
+        // policy (core `site.policy`) names it.
+        $hooks->addFilter('site.policy', static function (array $policy) use ($collector, $base) {
+            if ($collector()->enabled() && preg_match('~^https://[^/"\'\s?#]+~i', $base(), $m)) {
+                foreach (['connect-src', 'img-src'] as $directive) {
+                    $policy[$directive] = [...($policy[$directive] ?? ["'self'"]), strtolower($m[0])];
+                }
+            }
+
+            return $policy;
+        });
+
         $hooks->addFilter('site.build.signature', fn (array $parts) => [...$parts, 'analytics:'.(int) $collector()->enabled().':'.$collector()->mode().':'.(int) $this->setting('consent_required', true).':'.$base()]);
 
         $hooks->on('settings.saved', function (string $namespace) use ($collector) {

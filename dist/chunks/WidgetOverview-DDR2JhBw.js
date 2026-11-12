@@ -25,7 +25,6 @@ function m() {
 		empty: h && !h.tracked && {
 			icon: "chart",
 			title: h.enabled ? o("No visits yet") : o("Analytics is off"),
-			description: h.enabled ? o("Visits appear here as people open your published site.") : void 0,
 			action: !h.enabled && i("settings.manage") && /* @__PURE__ */ f(s, {
 				size: "sm",
 				onClick: () => a("/analytics?tab=settings"),
